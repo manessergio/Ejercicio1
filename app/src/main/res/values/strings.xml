@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Ejercicio1</string>
+    <string name="tomar_foto">Tomar Foto</string>
+    <string name="mandar_por_mail">Mandar por mail</string>
+</resources>
