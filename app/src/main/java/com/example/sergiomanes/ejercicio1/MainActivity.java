@@ -138,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         String imageFileName = "Pic_" + timeStamp;
         //tomo ruta
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+       /* File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera/");
+        if (!storageDir.exists())
+            storageDir.mkdirs();*/
+
         //hago template del archivo
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -154,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
+        MainActivity.this.sendBroadcast(mediaScanIntent);
     }
 
     private void setThumb(String image)
