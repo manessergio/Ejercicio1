@@ -52,41 +52,42 @@ public class presenter {
 
 @Subscribe
 public void OnButtonMailPressed(view.OnButtonMailPressedEvent event) {
-    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    if (takePictureIntent.resolveActivity(View.getContext().getPackageManager()) != null) {
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Continuo una vez q se haya creado bien el archivo
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(View.getContext(),
-                    "com.example.android.fileprovider",
-                    photoFile);
-            // Le digo al intent que quiero obtener la foto q se tome
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            //lanzo activity esperando una respuesta
-            View.GetActivity().startActivityForResult(takePictureIntent, Model.getREQUEST_TAKE_PHOTO());
-        }
+    if (Model.getmCurrentPhotoPath() != null)
+    {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("application/image");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Test Subject");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(Model.getmCurrentPhotoPath()));
+        View.getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
     }
+    else
+    {
+        Toast.makeText(View.GetActivity(),"Primero, toma una foto",Toast.LENGTH_SHORT).show();
+    }
+
 }
     @Subscribe
     public void OnButtonTakePhotoPressedEvent (view.OnButtonTakePhotoPressedEvent event)
     {
-        if (Model.getmCurrentPhotoPath() != null)
-        {
-            Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-            emailIntent.setType("application/image");
-            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Test Subject");
-            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "From My App");
-            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(Model.getmCurrentPhotoPath()));
-            View.getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-        }
-        else
-        {
-            Toast.makeText(View.GetActivity(),"Primero, toma una foto",Toast.LENGTH_SHORT).show();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(View.getContext().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Continuo una vez q se haya creado bien el archivo
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(View.getContext(),
+                        "com.example.android.fileprovider",
+                        photoFile);
+                // Le digo al intent que quiero obtener la foto q se tome
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                //lanzo activity esperando una respuesta
+                View.GetActivity().startActivityForResult(takePictureIntent, Model.getREQUEST_TAKE_PHOTO());
+            }
         }
     }
 
