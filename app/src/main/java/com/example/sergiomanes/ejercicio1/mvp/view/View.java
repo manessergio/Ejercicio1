@@ -10,37 +10,37 @@ import com.squareup.otto.Bus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
+import butterknife.OnClick;
 
-public class view extends viewActivity {
+public class View extends ViewActivity {
 
     private final Bus bus;
 
     @BindView(R.id.buttonTakePhoto)
-    Button ButtonTakePhoto;
+    Button buttonTakePhoto;
     @BindView(R.id.buttonMail)
-    Button ButtonMail;
+    Button buttonMail;
     @BindView(R.id.imageViewPreview)
-    ImageView imageviewPreview;
+    ImageView imageViewPreview;
 
-    public view(Activity Act, Bus BUS) {
-        super(Act);
-        this.bus = BUS;
-        ButterKnife.bind(this, Act);
+    public View(Activity act, Bus bus) {
+        super(act);
+        this.bus = bus;
+        ButterKnife.bind(this, act);
     }
 
     public void setImageViewPreview(Bitmap imageBitmap)
     {
-        imageviewPreview.setImageBitmap(imageBitmap);
+        imageViewPreview.setImageBitmap(imageBitmap);
     }
 
-    @OnItemClick(R.id.buttonTakePhoto)
+    @OnClick(R.id.buttonTakePhoto)
     public void OnButtonTakePhotoPressed()
     {
         bus.post(new OnButtonTakePhotoPressedEvent());
     }
 
-    @OnItemClick(R.id.buttonMail)
+    @OnClick(R.id.buttonMail)
     public void OnButtonMailPressed()
     {
         bus.post(new OnButtonMailPressedEvent());

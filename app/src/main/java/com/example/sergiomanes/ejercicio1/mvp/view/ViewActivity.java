@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
-public class viewActivity {
+public class ViewActivity {
     private WeakReference<Activity>  ActivityRef;
 
-    public viewActivity (Activity Act)
+    public ViewActivity(Activity Act)
     {
         ActivityRef = new WeakReference<>(Act);
     }
@@ -22,7 +22,7 @@ public class viewActivity {
     }
 
     @Nullable
-    public Context getContext()
+    public Context GetContext()
     {
         return GetActivity();
     }

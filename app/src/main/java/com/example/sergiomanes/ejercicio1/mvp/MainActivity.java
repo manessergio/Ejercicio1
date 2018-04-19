@@ -1,47 +1,43 @@
 package com.example.sergiomanes.ejercicio1.mvp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.sergiomanes.ejercicio1.R;
 import com.example.sergiomanes.ejercicio1.mvp.Utils.BusProvider;
-import com.example.sergiomanes.ejercicio1.mvp.model.model;
-import com.example.sergiomanes.ejercicio1.mvp.presenter.presenter;
-import com.example.sergiomanes.ejercicio1.mvp.view.view;
-import com.squareup.otto.Bus;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import butterknife.BindView;
+import com.example.sergiomanes.ejercicio1.mvp.model.Model;
+import com.example.sergiomanes.ejercicio1.mvp.presenter.Presenter;
+import com.example.sergiomanes.ejercicio1.mvp.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    private presenter Presenter;
+
+    private Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Presenter = new presenter(new model(), new view(MainActivity.this, BusProvider.getInstance()));
+        presenter = new Presenter(new Model(), new View(MainActivity.this, BusProvider.getInstance()));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BusProvider.register(presenter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+       BusProvider.unregister(presenter);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedPhoto) {
         super.onSaveInstanceState(savedPhoto);
         //Almaceno la ruta de la ultima imagen sacada, para mostarla cuando rote el dispositivo
-        savedPhoto.putString("CurrentPhoto", Presenter.getmCurrentPhotoPath());
+        savedPhoto.putString("CurrentPhoto", presenter.getmCurrentPhotoPath());
     }
 
     @Override
@@ -51,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         String photo  = savedPhoto.getString("CurrentPhoto");
         if (photo != null)
         {
-            Presenter.setmCurrentPhotoPath(photo);
-            Presenter.setThumb(Presenter.getmCurrentPhotoPath());
+            presenter.setmCurrentPhotoPath(photo);
+            presenter.setThumb(presenter.getmCurrentPhotoPath());
         }
     }
 
@@ -66,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 {
                     // Muestro Thumb
                     Bundle extras = data.getExtras();
-                    Presenter.setThumb(Presenter.getmCurrentPhotoPath());
+                    presenter.setThumb(presenter.getmCurrentPhotoPath());
 
                     // Actualizo galeria
-                    Presenter.galleryAddPic();
+                    presenter.galleryAddPic();
 
                 }
                 break;

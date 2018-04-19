@@ -1,6 +1,6 @@
 package com.example.sergiomanes.ejercicio1.mvp.model;
 
-public class model {
+public class Model {
 
     private final int REQUEST_TAKE_PHOTO = 1;
     private String mCurrentPhotoPath;
@@ -13,7 +13,7 @@ public class model {
         this.mCurrentPhotoPath = mCurrentPhotoPath;
     }
 
-    public int getREQUEST_TAKE_PHOTO() {
+    public int getREQUESTTAKEPHOTO() {
         return REQUEST_TAKE_PHOTO;
     }
 }
